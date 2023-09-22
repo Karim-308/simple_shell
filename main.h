@@ -1,35 +1,32 @@
 #ifndef MAIN_H
 #define MAIN_H
 
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include <sys/wait.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <stdarg.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
-char *isCommand(char *);
+extern char **environ;
+extern int child_exit_status;
 
+char *isCommand(char *command);
 char **split_line(char *line, int bufsize);
 
-int _strcmp(char *, char *);
+int _strcmp(char *str1, char *str2);
+int _strcmpn(char *str1, char *str2, int len);
+int _isInt(char *str);
+int _strToInt(char *str);
 
-int _strcmpn(char *, char *, int);
-
-char *_strcpy(char *);
-
-char *_strcon(char *, char *);
-
-int _isInt(char *);
-
-int _strToInt(char *);
-
-void _exitFromShell(char **, char *, char **);
-
-void _perror(int, ...);
-
+char *_strcpy(char *src);
+char *_strcon(char *str1, char *str2);
 char *_intToStr(int n);
 
-#endif
+void _exitFromShell(char **args, char *line, char **argv);
+void _perror(int error_num, ...);
+void _puts(int n, ...);
+void _cd(char **args, char *line, char **argv, char *commNum);
 
+#endif
