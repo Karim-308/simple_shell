@@ -130,5 +130,3 @@ char *_intToStr(int n)
 	newStr[i] = '\0';
 	return (newStr);
 }
-
-
