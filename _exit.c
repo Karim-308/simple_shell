@@ -1,7 +1,5 @@
 #include "main.h"
 
-extern int child_exit_status;
-
 /**
  * _isInt - Checks if a string is an integer.
  * @s: The string to check.
@@ -72,4 +70,3 @@ void _exitFromShell(char **args, char *line, char *argv[])
 		}
 	}
 }
-
