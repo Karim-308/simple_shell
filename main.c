@@ -10,7 +10,7 @@ int child_exit_status = 0;  /* To capture child process exit status */
  */
 int _putchar(char c)
 {
-	return (write(STDOUT_FILENO, &c, 1));
+        return (write(STDOUT_FILENO, &c, 1));
 }
 
 /**
@@ -18,14 +18,14 @@ int _putchar(char c)
  */
 void printEnv(void)
 {
-	int i, j;
+        int i, j;
 
-	for (i = 0; environ[i]; i++)
-	{
-		for (j = 0; environ[i][j]; j++)
-			_putchar(environ[i][j]);
-		_putchar('\n');
-	}
+        for (i = 0; environ[i]; i++)
+        {
+                for (j = 0; environ[i][j]; j++)
+                        _putchar(environ[i][j]);
+                _putchar('\n');
+        }
 }
 
 /**
@@ -36,30 +36,30 @@ void printEnv(void)
  */
 char **split_line(char *line, int bufsize)
 {
-	int position = 0;
-	char **tokens = malloc(bufsize * sizeof(char*));
-	char *token;
+        int position = 0;
+        char **tokens = malloc(bufsize * sizeof(char*));
+        char *token;
 
-	if (!tokens)
-	{
-		perror("simple_shell: allocation error\n");
-		exit(EXIT_FAILURE);
-	}
-	token = strtok(line, " \t\r\n\a");
-	while (token != NULL)
-	{
-		tokens[position] = token;
-		position++;
-		token = strtok(NULL, " \t\r\n\a");
-	}
-	tokens[position] = NULL;
+        if (!tokens)
+        {
+                perror("simple_shell: allocation error\n");
+                exit(EXIT_FAILURE);
+        }
+        token = strtok(line, " \t\r\n\a");
+        while (token != NULL)
+        {
+                tokens[position] = token;
+                position++;
+                token = strtok(NULL, " \t\r\n\a");
+        }
+        tokens[position] = NULL;
 
-	if (position == 0)
-	{
-		free(tokens);
-		return NULL;
-	}
-	return tokens;
+        if (position == 0)
+        {
+                free(tokens);
+                return NULL;
+        }
+        return tokens;
 }
 
 /**
@@ -70,13 +70,13 @@ char **split_line(char *line, int bufsize)
  */
 char *_getenv(char *name, int length)
 {
-	int i;
-	for (i = 0; environ[i]; i++)
-	{
-		if (_strcmpn(environ[i], name, length))
-			return (environ[i] + length + 1);
-	}
-	return (NULL);
+        int i;
+        for (i = 0; environ[i]; i++)
+        {
+                if (_strcmpn(environ[i], name, length))
+                        return (environ[i] + length + 1);
+        }
+        return (NULL);
 }
 
 /**
@@ -86,42 +86,42 @@ char *_getenv(char *name, int length)
  */
 char *isCommand(char *com)
 {
-	struct stat buffer;
-	char *dir = NULL;
-	char *PATH = NULL;
-	char *PATHcpy = NULL;
-	char *filePath = NULL;
-	char *returnPath = NULL;
-	char delimiters[] = ":";
+        struct stat buffer;
+        char *dir = NULL;
+        char *PATH = NULL;
+        char *PATHcpy = NULL;
+        char *filePath = NULL;
+        char *returnPath = NULL;
+        char delimiters[] = ":";
 
-	if (com[0] == '/')
-	{
-		if (stat(com, &buffer) == 0)
-			if (S_ISREG(buffer.st_mode))
-				return (com);
-			else
-				return (NULL);
-		else
-			return (NULL);
-	}
-	PATH = _getenv("PATH", 4);
-	PATHcpy = _strcpy(PATH);
-	dir = strtok(PATHcpy, delimiters);
-	while (dir)
-	{
-		filePath = _strcon(dir, com);
-		if (stat(filePath, &buffer) == 0)
-		{
-			returnPath = _strcpy(filePath);
-			free(filePath);
-			free(PATHcpy);
-			return (returnPath);
-		}
-		free(filePath);
-		dir = strtok(NULL, delimiters);
-	}
-	free(PATHcpy);
-	return NULL;
+        if (com[0] == '/')
+        {
+                if (stat(com, &buffer) == 0)
+                        if (S_ISREG(buffer.st_mode))
+                                return (com);
+                        else
+                                return (NULL);
+                else
+                        return (NULL);
+        }
+        PATH = _getenv("PATH", 4);
+        PATHcpy = _strcpy(PATH);
+        dir = strtok(PATHcpy, delimiters);
+        while (dir)
+        {
+                filePath = _strcon(dir, com);
+                if (stat(filePath, &buffer) == 0)
+                {
+                        returnPath = _strcpy(filePath);
+                        free(filePath);
+                        free(PATHcpy);
+                        return (returnPath);
+                }
+                free(filePath);
+                dir = strtok(NULL, delimiters);
+        }
+        free(PATHcpy);
+        return NULL;
 }
 
 
@@ -134,106 +134,124 @@ char *isCommand(char *com)
  */
 int main(int argc, __attribute__((unused))char *argv[], __attribute__((unused))char *envp[])
 {
-	ssize_t bytes;
-	char *line = NULL;
-	size_t length;
-	pid_t pid;
-	char *command = NULL, *commNumStr = NULL;
-	int interactive = isatty(STDIN_FILENO), commNum = 0;
-	char **args = NULL;
-	int status;
+        ssize_t bytes;
+        char *line = NULL;
+        size_t length;
+        pid_t pid;
+        char *command = NULL, *commNumStr = NULL;
+        int interactive = isatty(STDIN_FILENO), commNum = 0;
+        char **args = NULL;
+        int status;
+        /*char *p = malloc(128);
+        char *c = malloc(128);
+        char *t = malloc(128);*/
 
-	if (argc != 1)
-	{
-		perror("Usage: ./shell\n");
-		return (EXIT_FAILURE);
-	}
+        if (argc != 1)
+        {
+                perror("Usage: ./shell\n");
+                return (EXIT_FAILURE);
+        }
 
-	while (1)
-	{
-		commNum++;
-		if (interactive)
-			write(STDOUT_FILENO, "($) ", 5);
+        while (1)
+        {
+                commNum++;
+                if (interactive)
+                        write(STDOUT_FILENO, "($) ", 5);
 
-		bytes = getline(&line, &length, stdin);
-		if (bytes == -1)
-		{
-			if (!interactive)
-				break;
-			_putchar('\n');
-			break;
-		}
-		else if (bytes == 1)
-		{
-			continue;
-		}
-		else
-		{
-			args = split_line(line, bytes);
+                bytes = getline(&line, &length, stdin);
+                if (bytes == -1)
+                {
+                        if (!interactive)
+                                break;
+			/*free(p);
+                        free(c);
+                        free(t);*/
+                        _putchar('\n');
+                        break;
+                }
+                else if (bytes == 1)
+                {
+                        continue;
+                }
+                else
+                {
+                        args = split_line(line, bytes);
 
-			if (!args) /*if spaces are entered*/
-				continue;
+                        if (!args) /*if spaces are entered*/
+                                continue;
 
-			if (_strcmp(args[0], "exit"))
-			{
-				_exitFromShell(args, line, argv);
-				free(args);
-				continue;
-			}
+			 /*If cd is the command*/
+                        if (_strcmp(args[0], "cd"))
+                        {
+                                commNumStr = _intToStr(commNum);
+                                _cd(args, line, argv, commNumStr);/*&p, &c, &t*/
+                                free(args);
+                                free(commNumStr);
+                                continue;
+                        }
 
-			if (_strcmp(args[0], "env"))
-			{
-				free(args);
-				printEnv();
-				continue;
-			}
+                        if (_strcmp(args[0], "exit"))
+                        {
+				/*free(p);
+                                free(c);
+                                free(t);*/
+                                _exitFromShell(args, line, argv);
+                                free(args);
+                                continue;
+                        }
 
-			command = isCommand(args[0]);
-			if (command)
-			{
-				pid = fork();
-				if (pid < 0)
-				{
-					_perror(1, "Failed to fork\n");
-					continue;
-				}
-				else if (pid == 0)
-				{
-					if (execve(command, args, environ) == -1)
-					{
-						commNumStr = _intToStr(commNum);
-						_perror(6, argv[0], ": ", commNumStr, ": ", args[0], ": " "not found\n");
-						free(commNumStr);
-						exit(127);  /* Exit with an error code when command not found */
-					}
-				}
-				else
-				{
-					wait(&status);  /* Capture the status */
-					if (WIFEXITED(status))
-					{
-						child_exit_status = WEXITSTATUS(status);
-					}
-				}
-			}
-			else
-			{
-				commNumStr = _intToStr(commNum);
-				_perror(6, argv[0], ": ", commNumStr, ": ", args[0], ": " "not found\n");
-				free(commNumStr);
-				child_exit_status = 127;  /* Set error code when command not found */
-			}
+                        if (_strcmp(args[0], "env"))
+                        {
+                                free(args);
+                                printEnv();
+                                continue;
+                        }
 
-			if (command != args[0])
-				free(command);
-			if (args != NULL)
-				free(args);
-		}
-	}
+                        command = isCommand(args[0]);
+                        if (command)
+                        {
+                                pid = fork();
+                                if (pid < 0)
+                                {
+                                        _perror(1, "Failed to fork\n");
+                                        continue;
+                                }
+                                else if (pid == 0)
+                                {
+                                        if (execve(command, args, environ) == -1)
+                                        {
+                                                commNumStr = _intToStr(commNum);
+                                                _perror(6, argv[0], ": ", commNumStr, ": ", args[0], ": " "not found\n");
+                                                free(commNumStr);
+                                                exit(127);  /* Exit with an error code when command not found */
+                                        }
+                                }
+                                else
+                                {
+                                        wait(&status);  /* Capture the status */
+                                        if (WIFEXITED(status))
+                                        {
+                                                child_exit_status = WEXITSTATUS(status);
+                                        }
+                                }
+                        }
+                        else
+                        {
+                                commNumStr = _intToStr(commNum);
+                                _perror(6, argv[0], ": ", commNumStr, ": ", args[0], ": " "not found\n");
+                                free(commNumStr);
+                                child_exit_status = 127;  /* Set error code when command not found */
+                        }
 
-	if (line != NULL)
-		free(line);
+                        if (command != args[0])
+                                free(command);
+                        if (args != NULL)
+                                free(args);
+                }
+        }
 
-	return child_exit_status;  /* Return the captured child exit status */
+        if (line != NULL)
+                free(line);
+
+        return child_exit_status;  /* Return the captured child exit status */
 }
-
