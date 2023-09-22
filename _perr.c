@@ -26,4 +26,3 @@ void _perror(int n, ...)
 	/*buffer[++len] = '\0';*/
 	write(STDERR_FILENO, &buffer, len);
 }
-
