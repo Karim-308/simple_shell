@@ -1,5 +1,5 @@
 <h1 align="center">
-  0x16. C - Basic Shell Project
+  Basic Shell Project
 </h1>
 
 <p align="center">
@@ -20,7 +20,7 @@ This program is fully developed in the C programming language.
 </p>
 
 ## COPYRIGHT
-Copyright (C) 2023 by [**Karim Ibrahim**](https://github.com/Karim-308) and [**Hatem Ashraf**](https://github.com/Hatem-Ashraf)</br>
+Copyright (C) 2024 by [**Karim Ibrahim**](https://github.com/Karim-308) and [**Hatem Ashraf**](https://github.com/Hatem-Ashraf)</br>
 All rights reserved 
 
 
